@@ -1,20 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('.navbar');
-    const openButton = document.querySelector('.navbarOpen');
-    const closeButton = document.querySelector('.navbarClose');
     const overlay = document.querySelector('.overlay');
-    const main = document.querySelector('.main');
     const links = document.querySelectorAll('.menu a');
+    const navbarOpen = document.querySelector('.navbarOpen');
+    let allSpans = [];
+    allSpans = navbarOpen.querySelectorAll('span');
     function openMenu() {
+        navbarOpen.classList.remove('close')
+        navbarOpen.classList.add('open');
         navbar.classList.add('side-menu');
-        openButton.style.display='none';
-        closeButton.style.display='flex';
         overlay.style.display='block';
     }
     function closeMenu(){
+        navbarOpen.classList.remove('open')
+        navbarOpen.classList.add('close');
         navbar.classList.remove('side-menu');
-        openButton.style.display='flex';
-        closeButton.style.display='none';
+    }
+    function Menu(){
+        if (navbarOpen.className === 'navbarOpen open'){
+            closeMenu();
+        }
+        else{
+            openMenu();
+        }
     }
     const themeButton = document.querySelector('.themeChange');
     const htmlElement = document.documentElement;
@@ -34,6 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
             darkIcon.style.display = 'flex';
         }
     }
+    function hoverNavbarOpen(){
+        allSpans.forEach(currentSpan => {
+            currentSpan.classList.add('hovered');
+        });
+    }
+    function nothoverNavbarOpen(){
+        allSpans.forEach(currentSpan => {
+            currentSpan.classList.remove('hovered');
+        });
+    }
     function themeSwitch() {
         const currentTheme = localStorage.getItem('theme') || 'dark';
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -41,9 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     applyTheme(localStorage.getItem('theme'));
     themeButton.addEventListener('click', themeSwitch);
-    openButton.addEventListener('click', openMenu);
-    closeButton.addEventListener('click', closeMenu);
-    main.addEventListener('click', closeMenu);
-    links.addEventListener('click', closeMenu);
+    navbarOpen.addEventListener('click', Menu);
+    navbarOpen.addEventListener('mouseenter', hoverNavbarOpen);
+    navbarOpen.addEventListener('mouseleave', nothoverNavbarOpen);
 })
 

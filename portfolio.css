@@ -22,9 +22,13 @@
      overflow: hidden;
      justify-content: center;
      display: flex;
+     top: 0;
+     position: fixed;
      flex-direction: row;
      width: 100vw;
-     height: fit-content;
+     min-height: 4.3vh;
+     z-index: 40;
+     background-color: var(--color-bg);
      @media (width < 768px)
      {
          height: 100vh;
@@ -39,25 +43,103 @@
  }
  .navbarOpen{
      display: none;
+     position: fixed;
+     top: 2vh;
+     right:2vw;
+     cursor: pointer;
+     z-index: 50;
+     height: 26px;
+     width: 35px;
+     outline: none;
+     background: none;
+     border: none;
+     padding: 0;
+     color:var(--text-color);
      @media (width < 768px)
      {
-         display: block;
-         position: fixed;
-         top: 2vh;
-         right:2vw;
-         cursor: pointer;
-         z-index: 50;
-         outline: none;
-         color:var(--text-color);
+        display: flex;
+        padding: 0;
+        flex-direction: column;
+        justify-content: space-between;
      }
  }
+ .navbarOpen span{
+    display: block;
+    width: 100%;
+    height: 3px; 
+    background-color: var(--text-color);
+    transition: transform 0.4s ease-in-out, opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    transform-origin: center;
+}
+.navbarOpen span.hovered{
+    background-color: orange;
+}
+@keyframes OpenMenuTop{
+    0%{transform: translateY(0)rotate(0);}
+    50%{transform: translateY(11.5px)rotate(0);}
+    100%{transform: translateY(11.5px)rotate(-45deg);}
+}
+@keyframes OpenMenuMid{
+    0%{opacity: 1;}
+    50%{opacity: 1;}
+    100%{opacity: 0;}
+}
+@keyframes OpenMenuBot{
+    0%{transform: translateY(0)rotate(0);}
+    50%{transform: translateY(-11.5px)rotate(0);}
+    100%{transform: translateY(-11.5px)rotate(45deg);}
+}
+@keyframes CloseMenuTop{
+    0%{transform: translateY(11.5px)rotate(-45deg);}
+    50%{transform: translateY(11.5px)rotate(0);}
+    100%{transform: translateY(0)rotate(0);}
+}
+@keyframes CloseMenuMid{
+    0%{opacity: 0;}
+    50%{opacity: 1;}
+    100%{opacity: 1;}
+}
+@keyframes CloseMenuBot{
+    0%{transform: translateY(-11.5px)rotate(45deg);}
+    50%{transform: translateY(-11.5px)rotate(0);}
+    100%{transform: translateY(0)rotate(0);}
+}
+.navbarOpen.open span:nth-child(1){
+    animation-name: OpenMenuTop;
+    animation-duration: 0.5s;
+    animation-fill-mode:forwards;
+}
+.navbarOpen.open span:nth-child(2){
+    animation-name: OpenMenuMid;
+    animation-duration: 0.3s;
+    animation-fill-mode:forwards;
+}
+.navbarOpen.open span:nth-child(3){
+    animation-name: OpenMenuBot;
+    animation-duration: 0.5s;
+    animation-fill-mode:forwards;
+}
+    .navbarOpen.close span:nth-child(1){
+        animation-name: CloseMenuTop;
+        animation-duration: 0.5s;
+        animation-fill-mode:forwards;
+    }
+    .navbarOpen.close span:nth-child(2){
+        animation-name: CloseMenuMid;
+        animation-duration: 0.3s;
+        animation-fill-mode:forwards;
+    }
+    .navbarOpen.close span:nth-child(3){
+        animation-name: CloseMenuBot;
+        animation-duration: 0.5s;
+        animation-fill-mode:forwards;
+    }
  .mobileTop{
     height: fit-content;
     width: fit-content;
     display: flex;
     align-content: center;
     z-index: 40;
-    justify-content: center;
     @media (width < 768px)
     {
     position: fixed;
@@ -69,10 +151,9 @@
     }
  }
  .navbar{
-     width: clamp(900px, 80%, 2600px);
+     width: 100vw;
      position: absolute;
      top: 0;
-     right: 2vw;
      display: flex;
      justify-content: space-between;
      align-items: center;
@@ -81,6 +162,7 @@
      font-size: clamp(1rem, 0.9vw + .3rem, 1.5rem);
      background-color: var(--color-bg);
      z-index: 40;
+     right: 2vw;
      @media (width < 768px)
      {
          flex-direction: column;
@@ -90,15 +172,12 @@
          justify-content: center;
          background-color: transparent;
          font-size: clamp(1.3rem, 1.2vw + .3rem, 1.8rem);
-         transform: translateX(100%);
+         transform: translateY(-100%);
          transition: transform 200ms ease-in-out;
-     }
-     @media (min-width: 769px) and (max-width: 1167px){
-         width: 70%;
      }
  }
  .navbar.side-menu{
-     transform: translateX(0);
+     transform: translateY(0);
  }
  .overlay{
      @media (width < 768px)
@@ -118,16 +197,21 @@
      display: flex;
      justify-content: space-between;
      list-style-type: none;
+     box-sizing: content-box;
      flex-direction: row;
      height: inherit;
      margin: 0;
      padding: 0;
-     width: clamp(600px, 70%, 2300px);
+     width: 70%;
      padding-bottom: 1vh;
+     margin-left: 15vw;
      margin-right: auto;
+     z-index: 50;
+     background-color: var(--color-bg);
      border-bottom: black 2px solid;
-     @media (width < 768px)
-     {
+ }
+ @media (width < 768px){
+        ul{
          flex-direction: column;
          border: none;
          box-sizing: border-box;
@@ -139,9 +223,30 @@
          padding-left: 10%;
          padding-bottom: 3%;
          padding-top: 3%;
-         border-top: black solid 2px;
+         border-top: 2px solid;
+         border-top-color: var(--text-color);
+         opacity: 0;
+         transition: opacity 1000ms ease-in-out;
      }
- }
+     .navbar.side-menu ul {
+        opacity: 1;
+    }
+}
+@media(width<1150px)
+{
+    ul{
+        width: 90%;
+        margin-right: 7%;
+        margin-left: 3%;
+    }
+}
+@media (width>=2000px)
+{
+    ul{
+        margin-left: 23vw;
+        width: 45%;
+    }
+}
  a{
      color: var(--text-color);
      text-decoration: none;
@@ -161,7 +266,6 @@
  }
  .menu a:hover{
      color: orange;
- 
  }
  .menu a:hover::after{
      width:100%;
@@ -178,7 +282,8 @@
      gap: 20%;
      user-select: none;
      @media (width < 768px){
-        display: flex;
+        position: fixed;
+        left: 10vw;
         align-self: center;
      }
  }
